@@ -1,0 +1,16 @@
+<ion-modal-view align-title="left">
+  <ion-header-bar class="bar bar-dark">
+    <button class="button button-icon button-clear ion-close-round" ng-click="modal2.hide()"></button>
+    <h1 class="title">Open</h1>
+  </ion-header-bar>
+  <ion-content>
+    <ion-input class="item item-input">
+      <input type="text" placeholder="File Name" ng-model="file.open">
+    </ion-input>
+  </ion-content>
+  <div style="position: absolute; bottom: 0px; width: 100%">
+       <div style="text-align: center">
+         <button class="button button-block button-assertive ink" ng-click="openFile();">Open</button>
+       </div>
+   </div>
+</ion-modal-view>

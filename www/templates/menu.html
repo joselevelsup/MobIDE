@@ -1,0 +1,24 @@
+<ion-nav-bar class="bar-dark" nav-title-slide-ios7>
+  <ion-nav-buttons side="left">
+    <button class="button button-icon button-clear ion-navicon" ng-click="toggleLeft();"></button>
+  </ion-nav-buttons>
+ <ion-nav-back-button>
+ </ion-nav-back-button>
+</ion-nav-bar>
+<ion-side-menus>
+  <ion-side-menu side="left">
+    <ion-content>
+      <ion-list>
+        <ion-item menu-close href="#/app/editor">
+          <i class="icon ion-cube"></i> Editor
+        </ion-item>
+        <ion-item menu-close href="#/app/about">
+          <i class="icon ion-information-circled"></i> About
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+  <ion-side-menu-content edge-drag-threshold="true" drag-content="true">
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+</ion-side-menus>
