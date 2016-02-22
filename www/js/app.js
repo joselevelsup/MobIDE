@@ -2,6 +2,21 @@ var app = angular.module('starter', ['ionic', 'ionic-material', 'ui.ace', 'ngCor
 
 app.run(function($ionicPlatform, $cordovaStatusbar, $cordovaFile, $cordovaToast, $cordovaSplashscreen) {
   $ionicPlatform.ready(function() {
+    var admobid = {};
+        // select the right Ad Id according to platform
+    if( /(android)/i.test(navigator.userAgent) ) {
+        admobid = { // for Android
+            banner: 'ca-app-pub-1011446018846649/6238905616'
+        };
+    }
+
+    if(window.AdMob){
+        AdMob.createBanner( {
+        adId:admobid.banner,
+        position:AdMob.AD_POSITION.BOTTOM_CENTER,
+        autoShow:true} );
+    }
+
     if(ionic.Platform.isAndroid()){
       $cordovaFile.checkDir(cordova.file.externalRootDirectory, "Mobide")
         .then(function (success) {
@@ -30,13 +45,7 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $cordovaFile, $cordovaToast,
         });
     }
     if(window.cordova && window.cordova.plugins.Keyboard) {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-
-      // Don't remove this line unless you know what you are doing. It stops the viewport
-      // from snapping when text inputs are focused. Ionic handles this internally for
-      // a much nicer keyboard experience.
       cordova.plugins.Keyboard.disableScroll(true);
     }
     if(window.StatusBar) {
@@ -77,14 +86,11 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   $urlRouterProvider.otherwise('/app/editor');
 });
 
-app.controller('mainCtrl', function($scope, ionicMaterialInk, ionicMaterialMotion, $ionicSideMenuDelegate, $ionicPopover, $ionicModal, $cordovaInAppBrowser, $cordovaFile, $cordovaFileOpener2, $cordovaToast){
+app.controller('mainCtrl', function($scope, $window, $ionicPlatform, ionicMaterialInk, ionicMaterialMotion, $ionicSideMenuDelegate, $ionicPopover, $ionicModal, $cordovaInAppBrowser, $cordovaFile, $cordovaToast, $http){
   // ionicMaterialMotion.ripple();
   ionicMaterialInk.displayEffect();
   $scope.toggleLeft = function(){
     $ionicSideMenuDelegate.toggleLeft();
-  };
-  $scope.toggleRight = function(){
-    $ionicSideMenuDelegate.toggleRight();
   };
 
   var options = {
@@ -137,7 +143,7 @@ app.controller('mainCtrl', function($scope, ionicMaterialInk, ionicMaterialMotio
     save: "",
     editor: "",
     themes: "",
-    open: ""
+    open: null
   }
 
     $scope.aceOption = {
@@ -184,6 +190,7 @@ app.controller('mainCtrl', function($scope, ionicMaterialInk, ionicMaterialMotio
 
   $scope.newFile = function(){
     $scope.file.editor = null;
+    $scope.popover.hide();
   }
 
   $scope.saveThis = function(){
@@ -218,42 +225,35 @@ app.controller('mainCtrl', function($scope, ionicMaterialInk, ionicMaterialMotio
         })
       })
     }
-    if(ionic.Platform.isIOS()){
-      $cordovaFile.checkFile(cordova.file.documentsDirectory+'/Mobide', $scope.file.save)
-      .then(function(success){
-        $cordovaFile.writeExistingFile(cordova.file.documentsDirectory+'/Mobide', $scope.file.save, $scope.file.editor)
-        .then(function(success){
-          $scope.modal.hide();
-          $scope.popover.hide();
-          $cordovaToast.showShortBottom('Saved!');
-        }, function(error){
-          $scope.modal.hide();
-          $scope.popover.hide();
-          $cordovaToast.showLongBottom('An Error Occured')
-        })
-      }, function(error){
-        $cordovaFile.writeFile(cordova.file.documentsDirectory+'/Mobide', $scope.file.save, $scope.file.editor, true)
-        .then(function(success){
-          $scope.modal.hide();
-          $scope.popover.hide();
-          $cordovaToast.showShortBottom('Saved!');
-        }, function(error){
-          $scope.modal.hide();
-          $scope.popover.hide();
-          $cordovaToast.showLongBottom('An Error Occured');
-        })
-      })
-    }
   };
+
 
 
   $scope.openFileModal = function(){
     $scope.modal2.show();
     $scope.popover.hide();
+    $ionicPlatform.ready(function(){
+      $window.resolveLocalFileSystemURL(
+          cordova.file.externalRootDirectory+"/Mobide",
+          function (dirEntry) {
+              var dirReader = dirEntry.createReader();
+              dirReader.readEntries(
+                  function (entries) {
+                      $scope.dirFiles = entries; // directory entries
+                  },
+                  function (err) {
+                      console.log(err);
+                  }
+              );
+          }, function (err) {
+              console.log(err);
+          }
+      );
+    })
   }
 
-  $scope.openFile = function(){
-    $cordovaFile.readAsText(cordova.file.externalRootDirectory+"/Mobide", $scope.file.open)
+  $scope.openFile = function(fileName){
+    $cordovaFile.readAsText(cordova.file.externalRootDirectory+"/Mobide", fileName)
       .then(function(result){
         $scope.modal2.hide();
         $scope.file.editor = result;

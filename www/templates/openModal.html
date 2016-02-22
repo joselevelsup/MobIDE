@@ -4,13 +4,10 @@
     <h1 class="title">Open</h1>
   </ion-header-bar>
   <ion-content>
-    <ion-input class="item item-input">
-      <input type="text" placeholder="File Name" ng-model="file.open">
-    </ion-input>
+    <ion-list>
+      <ion-item ng-repeat="f in dirFiles" ng-click="openFile(f.name);">
+        {{f.name}}
+      </ion-item>
+    </ion-list>
   </ion-content>
-  <div style="position: absolute; bottom: 0px; width: 100%">
-       <div style="text-align: center">
-         <button class="button button-block button-assertive ink" ng-click="openFile();">Open</button>
-       </div>
-   </div>
 </ion-modal-view>
