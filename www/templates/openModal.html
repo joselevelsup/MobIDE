@@ -1,12 +1,14 @@
 <ion-modal-view align-title="left">
   <ion-header-bar class="bar bar-dark">
     <button class="button button-icon button-clear ion-close-round" ng-click="modal2.hide()"></button>
-    <h1 class="title">Open</h1>
+    <h1 class="title">Open File</h1>
   </ion-header-bar>
   <ion-content>
     <ion-list>
       <ion-item ng-repeat="f in dirFiles" ng-click="openFile(f.name);">
-        {{f.name}}
+        <div ng-if="f.isFile == true">
+            <i class="icon ion-document-text"></i> {{f.name}}
+        </div>
       </ion-item>
     </ion-list>
   </ion-content>

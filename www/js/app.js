@@ -86,9 +86,13 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   $urlRouterProvider.otherwise('/app/editor');
 });
 
-app.controller('mainCtrl', function($scope, $window, $ionicPlatform, ionicMaterialInk, ionicMaterialMotion, $ionicSideMenuDelegate, $ionicPopover, $ionicModal, $cordovaInAppBrowser, $cordovaFile, $cordovaToast, $http){
+app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, ionicMaterialInk, ionicMaterialMotion, $ionicSideMenuDelegate, $ionicPopover, $ionicModal, $cordovaInAppBrowser, $cordovaFile, $cordovaToast, $http){
   // ionicMaterialMotion.ripple();
-  ionicMaterialInk.displayEffect();
+  $timeout(function(){
+    ionicMaterialInk.displayEffect();
+    ionicMaterialMotion.ripple();
+  },0);
+
   $scope.toggleLeft = function(){
     $ionicSideMenuDelegate.toggleLeft();
   };
@@ -115,6 +119,7 @@ app.controller('mainCtrl', function($scope, $window, $ionicPlatform, ionicMateri
     });
   }
 
+  //Popovers
   $ionicPopover.fromTemplateUrl('templates/popover.html', {
     scope: $scope,
   }).then(function(popover) {
@@ -126,6 +131,13 @@ app.controller('mainCtrl', function($scope, $window, $ionicPlatform, ionicMateri
     $scope.popover2 = popover2;
   });
 
+  //Modals
+  $ionicModal.fromTemplateUrl('templates/newFolderModal.html', {
+    scope: $scope,
+    animation: 'slide-in-down'
+  }).then(function(modal3){
+    $scope.modal3 = modal3;
+  });
   $ionicModal.fromTemplateUrl('templates/saveModal.html', {
     scope: $scope,
     animation: 'slide-in-down'
@@ -139,11 +151,12 @@ app.controller('mainCtrl', function($scope, $window, $ionicPlatform, ionicMateri
     $scope.modal2 = modal2;
   });
 
+
   $scope.file = {
     save: "",
     editor: "",
     themes: "",
-    open: null
+    folder: null
   }
 
     $scope.aceOption = {
@@ -193,7 +206,22 @@ app.controller('mainCtrl', function($scope, $window, $ionicPlatform, ionicMateri
     $scope.popover.hide();
   }
 
-  $scope.saveThis = function(){
+  $scope.newFolderModal = function(){
+    $scope.modal3.show();
+    $scope.popover.hide();
+  }
+
+  $scope.createFolder = function(){
+    $cordovaFile.createDir(cordova.file.externalRootDirectory+"/Mobide", $scope.file.folder, true)
+    .then(function(success){
+      $scope.modal3.hide();
+      $cordovaToast.showLongBottom("Directory Created!");
+    }, function(error){
+      $cordovaToast.showLongBottom("Error Making Directory");
+    });
+  }
+
+  $scope.saveModal = function(){
     $scope.modal.show();
     $scope.popover.hide();
   };
@@ -233,22 +261,17 @@ app.controller('mainCtrl', function($scope, $window, $ionicPlatform, ionicMateri
     $scope.modal2.show();
     $scope.popover.hide();
     $ionicPlatform.ready(function(){
-      $window.resolveLocalFileSystemURL(
-          cordova.file.externalRootDirectory+"/Mobide",
-          function (dirEntry) {
-              var dirReader = dirEntry.createReader();
-              dirReader.readEntries(
-                  function (entries) {
-                      $scope.dirFiles = entries; // directory entries
-                  },
-                  function (err) {
-                      console.log(err);
-                  }
-              );
-          }, function (err) {
-              console.log(err);
-          }
-      );
+      $window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory+"/Mobide", function (dirEntry) {
+        var dirReader = dirEntry.createReader();
+        dirReader.readEntries(function (entries) {
+          $scope.dirFiles = entries;
+          console.log(entries);
+        }, function (err) {
+          console.log(err);
+        });
+      }, function (err) {
+        console.log(err);
+      });
     })
   }
 
