@@ -44,6 +44,19 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $cordovaFile, $cordovaToast,
           });
         });
     }
+    if(ionic.Platform.isIPad()){
+      $cordovaFile.checkDir(cordova.file.documentsDirectory, "Mobide")
+        .then(function (success) {
+          $cordovaToast.showShortBottom("iOS Directory Loaded");
+        }, function (error) {
+          $cordovaFile.createDir(cordova.file.documentsDirectory, "Mobide", true)
+          .then(function(success){
+            $cordovaToast.showLongBottom("Mobide Directory Created!");
+          }, function(error){
+            $cordovaToast.showLongBottom(error);
+          });
+        });
+    }
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -224,13 +237,33 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, i
   }
 
   $scope.createFolder = function(){
-    $cordovaFile.createDir(cordova.file.externalRootDirectory+"/Mobide", $scope.file.folder, true)
-    .then(function(success){
-      $scope.modal3.hide();
-      $cordovaToast.showLongBottom("Directory Created!");
-    }, function(error){
-      $cordovaToast.showLongBottom("Error Making Directory");
-    });
+    if(ionic.Platform.isAndroid()){
+      $cordovaFile.createDir(cordova.file.externalRootDirectory+"/Mobide", $scope.file.folder, true)
+      .then(function(success){
+        $scope.modal3.hide();
+        $cordovaToast.showLongBottom("Directory Created!");
+      }, function(error){
+        $cordovaToast.showLongBottom("Error Making Directory");
+      });
+    }
+    if(ionic.Platform.isIOS()){
+      $cordovaFile.createDir(cordova.file.documentsDirectory+"/Mobide", $scope.file.folder, true)
+      .then(function(success){
+        $scope.modal3.hide();
+        $cordovaToast.showLongBottom("Directory Created!");
+      }, function(error){
+        $cordovaToast.showLongBottom("Error Making Directory");
+      });
+    }
+    if(ionic.Platform.isIPad()){
+      $cordovaFile.createDir(cordova.file.documentsDirectory+"/Mobide", $scope.file.folder, true)
+      .then(function(success){
+        $scope.modal3.hide();
+        $cordovaToast.showLongBottom("Directory Created!");
+      }, function(error){
+        $cordovaToast.showLongBottom("Error Making Directory");
+      });
+    }
   }
 
   $scope.saveModal = function(){
@@ -265,6 +298,32 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, i
         })
       })
     }
+    if(ionic.Platform.isIOS()){
+      $cordovaFile.checkFile(cordova.file.documentsDirectory+"/Mobide", $scope.file.save)
+      .then(function(success){
+        $cordovaFile.writeExistingFile(cordova.file.documentsDirectory+"/Mobide", $scope.file.save, $scope.file.editor)
+        .then(function(success){
+          $scope.modal.hide();
+          $scope.popover.hide();
+          $cordovaToast.showShortBottom('Saved!');
+        }, function(error){
+          $scope.modal.hide();
+          $scope.popover.hide();
+          $cordovaToast.showLongBottom('An Error Occured')
+        })
+      }, function(error){
+        $cordovaFile.writeFile(cordova.file.documentsDirectory+"/Mobide", $scope.file.save, $scope.file.editor, true)
+        .then(function(success){
+          $scope.modal.hide();
+          $scope.popover.hide();
+          $cordovaToast.showShortBottom('Saved!');
+        }, function(error){
+          $scope.modal.hide();
+          $scope.popover.hide();
+          $cordovaToast.showLongBottom('An Error Occured');
+        })
+      })
+    }
   };
 
 
@@ -273,29 +332,79 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, i
     $scope.modal2.show();
     $scope.popover.hide();
     $ionicPlatform.ready(function(){
-      $window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory+"/Mobide", function (dirEntry) {
-        var dirReader = dirEntry.createReader();
-        dirReader.readEntries(function (entries) {
-          $scope.dirFiles = entries;
-          console.log(entries);
+      if(ionic.Platform.isAndroid()){
+        $window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory+"/Mobide", function (dirEntry) {
+          var dirReader = dirEntry.createReader();
+          dirReader.readEntries(function (entries) {
+            $scope.dirFiles = entries;
+            console.log(entries);
+          }, function (err) {
+            console.log(err);
+          });
         }, function (err) {
           console.log(err);
         });
-      }, function (err) {
-        console.log(err);
-      });
+      }
+      if(ionic.Platform.isIOS()){
+        $window.resolveLocalFileSystemURL(cordova.file.documentsDirectory+"/Mobide", function (dirEntry) {
+          var dirReader = dirEntry.createReader();
+          dirReader.readEntries(function (entries) {
+            $scope.dirFiles = entries;
+            console.log(entries);
+          }, function (err) {
+            console.log(err);
+          });
+        }, function (err) {
+          console.log(err);
+        });
+      }
+      if(ionic.Platform.isIPad()){
+        $window.resolveLocalFileSystemURL(cordova.file.documentsDirectory+"/Mobide", function (dirEntry) {
+          var dirReader = dirEntry.createReader();
+          dirReader.readEntries(function (entries) {
+            $scope.dirFiles = entries;
+            console.log(entries);
+          }, function (err) {
+            console.log(err);
+          });
+        }, function (err) {
+          console.log(err);
+        });
+      }
     })
   }
 
   $scope.openFile = function(fileName){
-    $cordovaFile.readAsText(cordova.file.externalRootDirectory+"/Mobide", fileName)
-      .then(function(result){
-        $scope.modal2.hide();
-        $scope.file.editor = result;
-        $cordovaToast.showShortBottom("Opened");
-      }, function(error){
-        $cordovaToast.showLongBottom('File did not open');
-      });
+    if(ionic.Platform.isAndroid()){
+      $cordovaFile.readAsText(cordova.file.externalRootDirectory+"/Mobide", fileName)
+        .then(function(result){
+          $scope.modal2.hide();
+          $scope.file.editor = result;
+          $cordovaToast.showShortBottom("Opened");
+        }, function(error){
+          $cordovaToast.showLongBottom('File did not open');
+        });
+    }
+    if(ionic.Platform.isIOS()){
+      $cordovaFile.readAsText(cordova.file.documentsDirectory+"/Mobide", fileName)
+        .then(function(result){
+          $scope.modal2.hide();
+          $scope.file.editor = result;
+          $cordovaToast.showShortBottom("Opened");
+        }, function(error){
+          $cordovaToast.showLongBottom('File did not open');
+        });
+    }
+    if(ionic.Platform.isIPad()){
+      $cordovaFile.readAsText(cordova.file.documentsDirectory+"/Mobide", fileName)
+        .then(function(result){
+          $scope.modal2.hide();
+          $scope.file.editor = result;
+          $cordovaToast.showShortBottom("Opened");
+        }, function(error){
+          $cordovaToast.showLongBottom('File did not open');
+        });
+    }
   }
 
 });
