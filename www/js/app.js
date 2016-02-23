@@ -1,4 +1,4 @@
-var app = angular.module('starter', ['ionic', 'ionic-material', 'ui.ace', 'ngCordova']);
+var app = angular.module('starter', ['ionic', 'ionic-material', 'ui.codemirror', 'ngCordova']);
 
 app.run(function($ionicPlatform, $cordovaStatusbar, $cordovaFile, $cordovaToast, $cordovaSplashscreen) {
   $ionicPlatform.ready(function() {
@@ -159,44 +159,46 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, i
     folder: null
   }
 
-    $scope.aceOption = {
-      mode: 'text',
-      theme: 'terminal'
+    $scope.editOptions = {
+      lineWrapping : true,
+       lineNumbers: true,
+       theme: 'material',
+       mode: 'javascript'
     };
 
     //Language Change Functions
     $scope.htmlChange = function(){
-      $scope.aceOption.mode = "html";
+      $scope.editOptions.mode = "htmlmixed";
       $cordovaToast.showLongBottom('HTML Mode');
       $scope.popover2.hide();
     }
     $scope.cssChange = function(){
-      $scope.aceOption.mode = "css";
+      $scope.editOptions.mode = "css";
       $cordovaToast.showLongBottom('CSS Mode');
       $scope.popover2.hide();
     }
     $scope.javascriptChange = function(){
-      $scope.aceOption.mode = "javascript";
+      $scope.editOptions.mode = "javascript";
       $cordovaToast.showLongBottom('Javascript Mode');
       $scope.popover2.hide();
     }
     $scope.coffeeChange = function(){
-      $scope.aceOption.mode = "coffee";
+      $scope.editOptions.mode = "coffeescript";
       $cordovaToast.showLongBottom('CoffeeScript Mode');
       $scope.popover2.hide();
     }
     $scope.cplusChange = function(){
-      $scope.aceOption.mode = "c_cpp";
+      $scope.editOptions.mode = "c_cpp";
       $cordovaToast.showLongBottom('C++ Mode');
       $scope.popover2.hide();
     }
     $scope.csharpChange = function(){
-      $scope.aceOption.mode = "csharp";
+      $scope.editOptions.mode = "csharp";
       $cordovaToast.showLongBottom('C# Mode');
       $scope.popover2.hide();
     }
     $scope.javaChange = function(){
-      $scope.aceOption.mode = "java";
+      $scope.editOptions.mode = "java";
       $cordovaToast.showLongBottom('Java Mode');
       $scope.popover2.hide();
     }
