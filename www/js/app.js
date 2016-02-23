@@ -163,7 +163,7 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, i
       lineWrapping : true,
        lineNumbers: true,
        theme: 'material',
-       mode: 'javascript'
+       mode: ''
     };
 
     //Language Change Functions
@@ -187,19 +187,29 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, i
       $cordovaToast.showLongBottom('CoffeeScript Mode');
       $scope.popover2.hide();
     }
-    $scope.cplusChange = function(){
-      $scope.editOptions.mode = "c_cpp";
+    $scope.cppChange = function(){
+      $scope.editOptions.mode = "text/x-c++src"
       $cordovaToast.showLongBottom('C++ Mode');
       $scope.popover2.hide();
     }
     $scope.csharpChange = function(){
-      $scope.editOptions.mode = "csharp";
+      $scope.editOptions.mode = "text/x-csharp"
       $cordovaToast.showLongBottom('C# Mode');
       $scope.popover2.hide();
     }
     $scope.javaChange = function(){
-      $scope.editOptions.mode = "java";
+      $scope.editOptions.mode = "text/x-java"
       $cordovaToast.showLongBottom('Java Mode');
+      $scope.popover2.hide();
+    }
+    $scope.pythonChange = function(){
+      $scope.editOptions.mode = "python";
+      $cordovaToast.showLongBottom('Python Mode');
+      $scope.popover2.hide();
+    }
+    $scope.swiftChange = function(){
+      $scope.editOptions.mode = "swift";
+      $cordovaToast.showLongBottom('Swift Mode');
       $scope.popover2.hide();
     }
 
