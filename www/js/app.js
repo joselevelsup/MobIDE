@@ -27,9 +27,9 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile,
     }
 
     if(ionic.Platform.isAndroid()){
-      // $ionicLoading.show({
-      //   template: '<ion-spinner icon="android"></ion-spinner><br/>Loading...'
-      // });
+      $ionicLoading.show({
+        template: '<ion-spinner icon="android"></ion-spinner><br/>Loading...'
+      });
       $cordovaFile.checkDir(cordova.file.externalRootDirectory, "Mobide")
         .then(function (success) {
           $ionicLoading.hide();
@@ -37,6 +37,7 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile,
         }, function (error) {
           $cordovaFile.createDir(cordova.file.externalRootDirectory, "Mobide", true)
           .then(function(success){
+            $ionicLoading.hide();
             $cordovaToast.showLongBottom("Mobide Directory Created!");
           }, function(error){
             $cordovaToast.showLongBottom(error);
@@ -44,9 +45,9 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile,
         });
     }
     if(ionic.Platform.isIOS()){
-      // $ionicLoading.show({
-      //   template: '<ion-spinner icon="ios"></ion-spinner><br/>Loading...'
-      // });
+      $ionicLoading.show({
+        template: '<ion-spinner icon="ios"></ion-spinner><br/>Loading...'
+      });
       $cordovaFile.checkDir(cordova.file.documentsDirectory, "Mobide")
         .then(function (success) {
           $ionicLoading.hide();
@@ -54,6 +55,7 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile,
         }, function (error) {
           $cordovaFile.createDir(cordova.file.documentsDirectory, "Mobide", true)
           .then(function(success){
+            $ionicLoading.hide();
             $cordovaToast.showLongBottom("Mobide Directory Created!");
           }, function(error){
             $cordovaToast.showLongBottom(error);
@@ -61,12 +63,17 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile,
         });
     }
     if(ionic.Platform.isIPad()){
+      $ionicLoading.show({
+        template: '<ion-spinner icon="ios"></ion-spinner><br/>Loading...'
+      });
       $cordovaFile.checkDir(cordova.file.documentsDirectory, "Mobide")
         .then(function (success) {
+          $ionicLoading.hide();
           $cordovaToast.showShortBottom("iOS Directory Loaded");
         }, function (error) {
           $cordovaFile.createDir(cordova.file.documentsDirectory, "Mobide", true)
           .then(function(success){
+            $ionicLoading.hide();
             $cordovaToast.showLongBottom("Mobide Directory Created!");
           }, function(error){
             $cordovaToast.showLongBottom(error);
@@ -115,12 +122,11 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   $urlRouterProvider.otherwise('/app/editor');
 });
 
-app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlatform, ionicMaterialInk, ionicMaterialMotion, $ionicSideMenuDelegate, $ionicPopover, $ionicModal, $cordovaInAppBrowser, $cordovaFile, $cordovaToast, $http){
-  // ionicMaterialMotion.ripple();
+app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlatform, ionicMaterialInk, ionicMaterialMotion, $ionicSideMenuDelegate, $ionicPopover, $ionicModal, $cordovaInAppBrowser, $cordovaFile, $cordovaToast){
   $timeout(function(){
     ionicMaterialInk.displayEffect();
     ionicMaterialMotion.ripple();
-  },0);
+  }, 0);
 
   $scope.toggleLeft = function(){
     $ionicSideMenuDelegate.toggleLeft();
@@ -134,7 +140,7 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
   $scope.openTwitter = function(){
     $cordovaInAppBrowser.open('https://twitter.com/joselevelsup', '_system', options)
     .then(function(success){
-      $cordovaToast.showShortBottom('Changed!');
+      // Success
     }, function(error){
       $cordovaToast.showLongBottom('Error with Opening App');
     });
@@ -142,7 +148,7 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
   $scope.openInsta = function(){
     $cordovaInAppBrowser.open('https://www.instagram.com/joselevelsup/', '_system', options).
     then(function(success){
-      $cordovaToast.showShortBottom('Changed!');
+      // Success
     }, function(error){
       $cordovaToast.showLongBottom('Error with Opening App')
     });
@@ -356,7 +362,7 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
           var dirReader = dirEntry.createReader();
           dirReader.readEntries(function (entries) {
             $scope.dirFiles = entries;
-            console.log(entries);
+            // console.log(entries);
           }, function (err) {
             console.log(err);
           });
@@ -369,7 +375,7 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
           var dirReader = dirEntry.createReader();
           dirReader.readEntries(function (entries) {
             $scope.dirFiles = entries;
-            console.log(entries);
+            // console.log(entries);
           }, function (err) {
             console.log(err);
           });
@@ -382,7 +388,7 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
           var dirReader = dirEntry.createReader();
           dirReader.readEntries(function (entries) {
             $scope.dirFiles = entries;
-            console.log(entries);
+            // console.log(entries);
           }, function (err) {
             console.log(err);
           });

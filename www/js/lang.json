@@ -1,6 +1,10 @@
 {
   "languages": [
     {
+      "name": "Text",
+      "mode": ""
+    },
+    {
       "name": "HTML",
       "mode": "text/html"
     },
