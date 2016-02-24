@@ -1,0 +1,40 @@
+{
+  "languages": [
+    {
+      "name": "HTML",
+      "mode": "text/html"
+    },
+    {
+      "name": "CSS",
+      "mode": "text/css"
+    },
+    {
+      "name": "Javascript",
+      "mode": "text/javascript"
+    },
+    {
+      "name": "CoffeeScript",
+      "mode": "text/x-coffeescript"
+    },
+    {
+      "name": "C++",
+      "mode": "text/x-c++src"
+    },
+    {
+      "name": "C#",
+      "mode": "text/x-csharp"
+    },
+    {
+      "name": "Java",
+      "mode": "text/x-java"
+    },
+    {
+      "name": "Python",
+      "mode": "text/x-python"
+    },
+    {
+      "name": "Ruby",
+      "mode": "text/x-ruby"
+    }
+  ]
+}

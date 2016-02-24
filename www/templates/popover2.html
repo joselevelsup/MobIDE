@@ -1,31 +1,7 @@
 <ion-popover-view style="height:auto;">
     <ion-list>
-      <ion-item ng-click="htmlChange();">
-        HTML
-      </ion-item>
-      <ion-item ng-click="cssChange();">
-        CSS
-      </ion-item>
-      <ion-item ng-click="javascriptChange();">
-        Javascript
-      </ion-item>
-      <ion-item ng-click="coffeeChange();">
-        Coffee Script
-      </ion-item>
-      <ion-item ng-click="cppChange();">
-        C++
-      </ion-item>
-      <ion-item ng-click="csharpChange();">
-        C#
-      </ion-item>
-      <ion-item ng-click="javaChange();">
-        Java
-      </ion-item>
-      <ion-item ng-click="pythonChange();">
-        Python
-      </ion-item>
-      <ion-item ng-click="swiftChange();">
-        Swift
+      <ion-item ng-repeat="m in modes" ng-click="changeMode(m.name, m.mode);">
+        {{m.name}}
       </ion-item>
     </ion-list>
 </ion-popover-view>

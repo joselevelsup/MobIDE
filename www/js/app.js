@@ -1,4 +1,4 @@
-var app = angular.module('starter', ['ionic', 'ionic-material', 'ui.codemirror', 'ngCordova']);
+var app = angular.module('mobide', ['ionic', 'ionic-material', 'ui.codemirror', 'ngCordova']);
 
 app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile, $cordovaToast, $cordovaSplashscreen) {
   $ionicPlatform.ready(function() {
@@ -27,9 +27,9 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile,
     }
 
     if(ionic.Platform.isAndroid()){
-      $ionicLoading.show({
-        template: '<ion-spinner icon="android"></ion-spinner><br/>Loading...'
-      });
+      // $ionicLoading.show({
+      //   template: '<ion-spinner icon="android"></ion-spinner><br/>Loading...'
+      // });
       $cordovaFile.checkDir(cordova.file.externalRootDirectory, "Mobide")
         .then(function (success) {
           $ionicLoading.hide();
@@ -38,16 +38,15 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile,
           $cordovaFile.createDir(cordova.file.externalRootDirectory, "Mobide", true)
           .then(function(success){
             $cordovaToast.showLongBottom("Mobide Directory Created!");
-            $cordovaSplashscreen.hide();
           }, function(error){
             $cordovaToast.showLongBottom(error);
           });
         });
     }
     if(ionic.Platform.isIOS()){
-      $ionicLoading.show({
-        template: '<ion-spinner icon="ios"></ion-spinner><br/>Loading...'
-      });
+      // $ionicLoading.show({
+      //   template: '<ion-spinner icon="ios"></ion-spinner><br/>Loading...'
+      // });
       $cordovaFile.checkDir(cordova.file.documentsDirectory, "Mobide")
         .then(function (success) {
           $ionicLoading.hide();
@@ -116,7 +115,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   $urlRouterProvider.otherwise('/app/editor');
 });
 
-app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, ionicMaterialInk, ionicMaterialMotion, $ionicSideMenuDelegate, $ionicPopover, $ionicModal, $cordovaInAppBrowser, $cordovaFile, $cordovaToast, $http){
+app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlatform, ionicMaterialInk, ionicMaterialMotion, $ionicSideMenuDelegate, $ionicPopover, $ionicModal, $cordovaInAppBrowser, $cordovaFile, $cordovaToast, $http){
   // ionicMaterialMotion.ripple();
   $timeout(function(){
     ionicMaterialInk.displayEffect();
@@ -193,54 +192,31 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, i
       lineWrapping : true,
        lineNumbers: true,
        theme: 'material',
-       mode: ''
+       mode: '',
+       parserfile: '',
+       stylesheet: '',
+       path: ''
     };
 
+
     //Language Change Functions
-    $scope.htmlChange = function(){
-      $scope.editOptions.mode = "htmlmixed";
-      // $cordovaToast.showLongBottom('HTML Mode');
+    $http.get('js/lang.json')
+      .then(function(resp){
+        $scope.modes = resp.data.languages;
+      }, function(error){
+        console.log(error);
+      });
+
+    $scope.changeMode = function(modeName, modeType){
+      $scope.editOptions.mode = modeType;
       $scope.popover2.hide();
-    }
-    $scope.cssChange = function(){
-      $scope.editOptions.mode = "css";
-      // $cordovaToast.showLongBottom('CSS Mode');
-      $scope.popover2.hide();
-    }
-    $scope.javascriptChange = function(){
-      $scope.editOptions.mode = "javascript";
-      // $cordovaToast.showLongBottom('Javascript Mode');
-      $scope.popover2.hide();
-    }
-    $scope.coffeeChange = function(){
-      $scope.editOptions.mode = "coffeescript";
-      // $cordovaToast.showLongBottom('CoffeeScript Mode');
-      $scope.popover2.hide();
-    }
-    $scope.cppChange = function(){
-      $scope.editOptions.mode = "text/x-c++src"
-      // $cordovaToast.showLongBottom('C++ Mode');
-      $scope.popover2.hide();
-    }
-    $scope.csharpChange = function(){
-      $scope.editOptions.mode = "text/x-csharp"
-      // $cordovaToast.showLongBottom('C# Mode');
-      $scope.popover2.hide();
-    }
-    $scope.javaChange = function(){
-      $scope.editOptions.mode = "text/x-java"
-      // $cordovaToast.showLongBottom('Java Mode');
-      $scope.popover2.hide();
-    }
-    $scope.pythonChange = function(){
-      $scope.editOptions.mode = "python";
-      // $cordovaToast.showLongBottom('Python Mode');
-      $scope.popover2.hide();
-    }
-    $scope.swiftChange = function(){
-      $scope.editOptions.mode = "swift";
-      // $cordovaToast.showLongBottom('Swift Mode');
-      $scope.popover2.hide();
+      if(modeType == "text/html"){
+        $scope.editOptions.parserfile = ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"];
+        $scope.editOptions.stylesheet = ["css/xmlcolors.css", "css/jscolors.css", "css/csscolors.css"];
+        $scope.editOptions.path = "js/";
+      }
+      $cordovaToast.showShortBottom(modeName+' Mode');
+      // console.log(modeName+' Mode');
     }
 
   $scope.newFile = function(){
