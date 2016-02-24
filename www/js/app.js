@@ -1,14 +1,23 @@
 var app = angular.module('starter', ['ionic', 'ionic-material', 'ui.codemirror', 'ngCordova']);
 
-app.run(function($ionicPlatform, $cordovaStatusbar, $cordovaFile, $cordovaToast, $cordovaSplashscreen) {
+app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile, $cordovaToast, $cordovaSplashscreen) {
   $ionicPlatform.ready(function() {
     var admobid = {};
-        // select the right Ad Id according to platform
     if( /(android)/i.test(navigator.userAgent) ) {
-        admobid = { // for Android
+        admobid = {
             banner: 'ca-app-pub-1011446018846649/6238905616'
         };
-    }
+    } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+            admobid = {
+                banner: '',
+                interstitial: ''
+            };
+        } else {
+            admobid = { // for Windows Phone
+                banner: '',
+                interstitial: ''
+            };
+        }
 
     if(window.AdMob){
         AdMob.createBanner( {
@@ -18,8 +27,12 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $cordovaFile, $cordovaToast,
     }
 
     if(ionic.Platform.isAndroid()){
+      $ionicLoading.show({
+        template: '<ion-spinner icon="android"></ion-spinner><br/>Loading...'
+      });
       $cordovaFile.checkDir(cordova.file.externalRootDirectory, "Mobide")
         .then(function (success) {
+          $ionicLoading.hide();
           $cordovaToast.showShortBottom("Android Directory Loaded");
         }, function (error) {
           $cordovaFile.createDir(cordova.file.externalRootDirectory, "Mobide", true)
@@ -32,8 +45,12 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $cordovaFile, $cordovaToast,
         });
     }
     if(ionic.Platform.isIOS()){
+      $ionicLoading.show({
+        template: '<ion-spinner icon="ios"></ion-spinner><br/>Loading...'
+      });
       $cordovaFile.checkDir(cordova.file.documentsDirectory, "Mobide")
         .then(function (success) {
+          $ionicLoading.hide();
           $cordovaToast.showShortBottom("iOS Directory Loaded");
         }, function (error) {
           $cordovaFile.createDir(cordova.file.documentsDirectory, "Mobide", true)
@@ -182,47 +199,47 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, i
     //Language Change Functions
     $scope.htmlChange = function(){
       $scope.editOptions.mode = "htmlmixed";
-      $cordovaToast.showLongBottom('HTML Mode');
+      // $cordovaToast.showLongBottom('HTML Mode');
       $scope.popover2.hide();
     }
     $scope.cssChange = function(){
       $scope.editOptions.mode = "css";
-      $cordovaToast.showLongBottom('CSS Mode');
+      // $cordovaToast.showLongBottom('CSS Mode');
       $scope.popover2.hide();
     }
     $scope.javascriptChange = function(){
       $scope.editOptions.mode = "javascript";
-      $cordovaToast.showLongBottom('Javascript Mode');
+      // $cordovaToast.showLongBottom('Javascript Mode');
       $scope.popover2.hide();
     }
     $scope.coffeeChange = function(){
       $scope.editOptions.mode = "coffeescript";
-      $cordovaToast.showLongBottom('CoffeeScript Mode');
+      // $cordovaToast.showLongBottom('CoffeeScript Mode');
       $scope.popover2.hide();
     }
     $scope.cppChange = function(){
       $scope.editOptions.mode = "text/x-c++src"
-      $cordovaToast.showLongBottom('C++ Mode');
+      // $cordovaToast.showLongBottom('C++ Mode');
       $scope.popover2.hide();
     }
     $scope.csharpChange = function(){
       $scope.editOptions.mode = "text/x-csharp"
-      $cordovaToast.showLongBottom('C# Mode');
+      // $cordovaToast.showLongBottom('C# Mode');
       $scope.popover2.hide();
     }
     $scope.javaChange = function(){
       $scope.editOptions.mode = "text/x-java"
-      $cordovaToast.showLongBottom('Java Mode');
+      // $cordovaToast.showLongBottom('Java Mode');
       $scope.popover2.hide();
     }
     $scope.pythonChange = function(){
       $scope.editOptions.mode = "python";
-      $cordovaToast.showLongBottom('Python Mode');
+      // $cordovaToast.showLongBottom('Python Mode');
       $scope.popover2.hide();
     }
     $scope.swiftChange = function(){
       $scope.editOptions.mode = "swift";
-      $cordovaToast.showLongBottom('Swift Mode');
+      // $cordovaToast.showLongBottom('Swift Mode');
       $scope.popover2.hide();
     }
 
@@ -299,6 +316,32 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, i
       })
     }
     if(ionic.Platform.isIOS()){
+      $cordovaFile.checkFile(cordova.file.documentsDirectory+"/Mobide", $scope.file.save)
+      .then(function(success){
+        $cordovaFile.writeExistingFile(cordova.file.documentsDirectory+"/Mobide", $scope.file.save, $scope.file.editor)
+        .then(function(success){
+          $scope.modal.hide();
+          $scope.popover.hide();
+          $cordovaToast.showShortBottom('Saved!');
+        }, function(error){
+          $scope.modal.hide();
+          $scope.popover.hide();
+          $cordovaToast.showLongBottom('An Error Occured')
+        })
+      }, function(error){
+        $cordovaFile.writeFile(cordova.file.documentsDirectory+"/Mobide", $scope.file.save, $scope.file.editor, true)
+        .then(function(success){
+          $scope.modal.hide();
+          $scope.popover.hide();
+          $cordovaToast.showShortBottom('Saved!');
+        }, function(error){
+          $scope.modal.hide();
+          $scope.popover.hide();
+          $cordovaToast.showLongBottom('An Error Occured');
+        })
+      })
+    }
+    if(ionic.Platform.isIPad()){
       $cordovaFile.checkFile(cordova.file.documentsDirectory+"/Mobide", $scope.file.save)
       .then(function(success){
         $cordovaFile.writeExistingFile(cordova.file.documentsDirectory+"/Mobide", $scope.file.save, $scope.file.editor)
@@ -406,5 +449,4 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $ionicPlatform, i
         });
     }
   }
-
 });
