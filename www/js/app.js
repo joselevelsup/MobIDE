@@ -9,13 +9,11 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile,
         };
     } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
             admobid = {
-                banner: '',
-                interstitial: ''
+                banner: 'ca-app-pub-1011446018846649/1369237211'
             };
         } else {
             admobid = { // for Windows Phone
-                banner: '',
-                interstitial: ''
+                banner: ''
             };
         }
 
@@ -45,9 +43,9 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile,
         });
     }
     if(ionic.Platform.isIOS()){
-      $ionicLoading.show({
-        template: '<ion-spinner icon="ios"></ion-spinner><br/>Loading...'
-      });
+      // $ionicLoading.show({
+      //   template: '<ion-spinner icon="ios"></ion-spinner><br/>Loading...'
+      // });
       $cordovaFile.checkDir(cordova.file.documentsDirectory, "Mobide")
         .then(function (success) {
           $ionicLoading.hide();
@@ -63,9 +61,9 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile,
         });
     }
     if(ionic.Platform.isIPad()){
-      $ionicLoading.show({
-        template: '<ion-spinner icon="ios"></ion-spinner><br/>Loading...'
-      });
+      // $ionicLoading.show({
+      //   template: '<ion-spinner icon="ios"></ion-spinner><br/>Loading...'
+      // });
       $cordovaFile.checkDir(cordova.file.documentsDirectory, "Mobide")
         .then(function (success) {
           $ionicLoading.hide();
@@ -91,8 +89,6 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $ionicLoading, $cordovaFile,
 });
 
 app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
-  $ionicConfigProvider.navBar.alignTitle('left');
-
   $stateProvider
     .state('app', {
     url: '/app',
