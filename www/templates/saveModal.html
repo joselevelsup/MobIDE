@@ -5,12 +5,18 @@
   </ion-header-bar>
   <ion-content>
     <ion-input class="item item-input">
-      <input type="text" placeholder="File Name" ng-model="file.save">
+      <input type="text" placeholder="Type Here for new file" ng-model="file.save">
     </ion-input>
+    <ion-list>
+      <div class="item item-divider">
+        Save As...
+      </div>
+      <ion-item ng-repeat="s in savedFiles" ng-click="saveThisFile(s.name);">
+        {{s.name}}
+      </ion-item>
+    </ion-list>
   </ion-content>
-  <div style="position: absolute; bottom: 0px; width: 100%">
-       <div style="text-align: center">
-         <button class="button button-block button-assertive ink" ng-click="saveThisFile();">Save</button>
-       </div>
+  <div style="position: absolute; bottom: 5px; left: 75%">
+      <button class="button button-fab button-assertive icon ion-archive" ng-click="saveAs();"></button>
    </div>
 </ion-modal-view>

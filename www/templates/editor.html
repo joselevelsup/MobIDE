@@ -1,5 +1,6 @@
-<ion-view view-title="Editor" align-title="left">
+<ion-view view-title="Editor">
   <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-play" ng-style="playButton" ng-click=playFile(f.name);></button>
     <button class="button button-icon button-clear ion-more" ng-click="popover.show($event);"></button>
     <button class="button button-icon button-clear ion-code" ng-click="popover2.show($event);"></button>
   </ion-nav-buttons>
