@@ -27,12 +27,10 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $cordovaFile, $cordovaToast,
     if(ionic.Platform.isAndroid()){
       $cordovaFile.checkDir(cordova.file.externalRootDirectory, "Mobide")
         .then(function (success) {
-          $ionicLoading.hide();
           $cordovaToast.showShortBottom("Android Directory Loaded");
         }, function (error) {
           $cordovaFile.createDir(cordova.file.externalRootDirectory, "Mobide", true)
           .then(function(success){
-            $ionicLoading.hide();
             $cordovaToast.showLongBottom("Mobide Directory Created!");
           }, function(error){
             $cordovaToast.showLongBottom(error);
@@ -42,12 +40,10 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $cordovaFile, $cordovaToast,
     if(ionic.Platform.isIOS()){
       $cordovaFile.checkDir(cordova.file.documentsDirectory, "Mobide")
         .then(function (success) {
-          $ionicLoading.hide();
           $cordovaToast.showShortBottom("iOS Directory Loaded");
         }, function (error) {
           $cordovaFile.createDir(cordova.file.documentsDirectory, "Mobide", true)
           .then(function(success){
-            $ionicLoading.hide();
             $cordovaToast.showLongBottom("Mobide Directory Created!");
           }, function(error){
             $cordovaToast.showLongBottom(error);
@@ -57,12 +53,10 @@ app.run(function($ionicPlatform, $cordovaStatusbar, $cordovaFile, $cordovaToast,
     if(ionic.Platform.isIPad()){
       $cordovaFile.checkDir(cordova.file.documentsDirectory, "Mobide")
         .then(function (success) {
-          $ionicLoading.hide();
           $cordovaToast.showShortBottom("iOS Directory Loaded");
         }, function (error) {
           $cordovaFile.createDir(cordova.file.documentsDirectory, "Mobide", true)
           .then(function(success){
-            $ionicLoading.hide();
             $cordovaToast.showLongBottom("Mobide Directory Created!");
           }, function(error){
             $cordovaToast.showLongBottom(error);
@@ -120,7 +114,7 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
 
   var options = {
     location: 'yes',
-    toolbar: 'no'
+    toolbar: 'yes'
   };
 
   $scope.openTwitter = function(){
@@ -153,12 +147,6 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
   });
 
   //Modals
-  $ionicModal.fromTemplateUrl('templates/newFolderModal.html', {
-    scope: $scope,
-    animation: 'slide-in-down'
-  }).then(function(modal3){
-    $scope.modal3 = modal3;
-  });
   $ionicModal.fromTemplateUrl('templates/saveModal.html', {
     scope: $scope,
     animation: 'slide-in-down'
@@ -170,6 +158,18 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
     animation: 'slide-in-down'
   }).then(function(modal2){
     $scope.modal2 = modal2;
+  });
+  $ionicModal.fromTemplateUrl('templates/newFolderModal.html', {
+    scope: $scope,
+    animation: 'slide-in-down'
+  }).then(function(modal3){
+    $scope.modal3 = modal3;
+  });
+  $ionicModal.fromTemplateUrl('templates/newFileModal.html', {
+    scope: $scope,
+    animation: 'slide-in-down'
+  }).then(function(modal4){
+    $scope.modal4 = modal4;
   });
 
 
@@ -217,9 +217,24 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
       // console.log(modeName+' Mode');
     }
 
-  $scope.newFile = function(){
-    $scope.file.editor = null;
+  $scope.newFileModal = function(){
+    $scope.modal4.show();
     $scope.popover.hide();
+  }
+
+  $scope.newFile = function(modeType){
+    $scope.file.editor = null;
+    $scope.editOptions.mode = modeType;
+    $scope.modal4.hide();
+    if(modeType == "text/html"){
+      $scope.playButton = {'visibility': 'visible'};
+      $scope.editOptions.parserfile = ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"];
+      $scope.editOptions.stylesheet = ["css/xmlcolors.css", "css/jscolors.css", "css/csscolors.css"];
+      $scope.editOptions.path = "js/";
+    }
+    else{
+      $scope.playButton = {'visibility': 'hidden'};
+    }
   }
 
   $scope.newFolderModal = function(){

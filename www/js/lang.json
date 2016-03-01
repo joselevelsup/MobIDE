@@ -2,43 +2,53 @@
   "languages": [
     {
       "name": "Text",
-      "mode": ""
+      "mode": "",
+      "fileTemplate": "Blank File"
     },
     {
       "name": "HTML",
-      "mode": "text/html"
+      "mode": "text/html",
+      "fileTemplate": "HTML File"
     },
     {
       "name": "CSS",
-      "mode": "text/css"
+      "mode": "text/css",
+      "fileTemplate": "CSS File"
     },
     {
       "name": "Javascript",
-      "mode": "text/javascript"
+      "mode": "text/javascript",
+      "fileTemplate": "Javascript File"
     },
     {
       "name": "CoffeeScript",
-      "mode": "text/x-coffeescript"
+      "mode": "text/x-coffeescript",
+      "fileTemplate": "CoffeeScript File"
     },
     {
       "name": "C++",
-      "mode": "text/x-c++src"
+      "mode": "text/x-c++src",
+      "fileTemplate": "C++ File"
     },
     {
       "name": "C#",
-      "mode": "text/x-csharp"
+      "mode": "text/x-csharp",
+      "fileTemplate": "C# File"
     },
     {
       "name": "Java",
-      "mode": "text/x-java"
+      "mode": "text/x-java",
+      "fileTemplate": "Java File"
     },
     {
       "name": "Python",
-      "mode": "text/x-python"
+      "mode": "text/x-python",
+      "fileTemplate": "Python File"
     },
     {
       "name": "Ruby",
-      "mode": "text/x-ruby"
+      "mode": "text/x-ruby",
+      "fileTemplate": "Ruby File"
     }
   ]
 }
