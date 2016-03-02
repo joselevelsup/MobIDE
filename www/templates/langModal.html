@@ -1,0 +1,11 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-dark">
+    <button class="button button-icon button-clear ion-close-round" ng-click="modal5.hide()"></button>
+    <h1 class="title">Languages</h1>
+  </ion-header-bar>
+    <ion-list>
+      <ion-item ng-repeat="m in modes" ng-click="changeMode(m.name, m.mode);">
+        {{m.name}}
+      </ion-item>
+    </ion-list>
+</ion-modal-view>

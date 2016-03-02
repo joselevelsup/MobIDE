@@ -140,11 +140,6 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
   }).then(function(popover) {
     $scope.popover = popover;
   });
-  $ionicPopover.fromTemplateUrl('templates/popover2.html', {
-    scope: $scope,
-  }).then(function(popover2) {
-    $scope.popover2 = popover2;
-  });
 
   //Modals
   $ionicModal.fromTemplateUrl('templates/saveModal.html', {
@@ -170,6 +165,12 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
     animation: 'slide-in-down'
   }).then(function(modal4){
     $scope.modal4 = modal4;
+  });
+  $ionicModal.fromTemplateUrl('templates/langModal.html', {
+    scope: $scope,
+    animation: 'slide-in-down'
+  }).then(function(modal5){
+    $scope.modal5 = modal5;
   });
 
 
@@ -216,6 +217,7 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
       $cordovaToast.showShortBottom(modeName+' Mode');
       // console.log(modeName+' Mode');
     }
+
 
   $scope.newFileModal = function(){
     $scope.modal4.show();
