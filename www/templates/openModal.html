@@ -5,10 +5,7 @@
   </ion-header-bar>
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="f in dirFiles" ng-click="openThis(f.name, f.isFile, f.isDirectory);">
-        <div ng-if="f.isDirectory == true">
-            <i class="icon ion-folder"></i> {{f.name}}
-        </div>
+      <ion-item ng-repeat="f in dirFiles" ng-click="openThis(f.name, f.nativeURL);">
         <div ng-if="f.isFile == true">
             <i class="icon ion-document-text"></i> {{f.name}}
         </div>
