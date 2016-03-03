@@ -7,40 +7,39 @@
         "files": {}
     },
     "installed_plugins": {
+        "cordova-plugin-admobpro": {
+            "PACKAGE_NAME": "com.joselevelsup.mobide"
+        },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.mobide237808"
+            "PACKAGE_NAME": "com.joselevelsup.mobide"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.mobide237808"
+            "PACKAGE_NAME": "com.joselevelsup.mobide"
+        },
+        "cordova-plugin-extension": {
+            "PACKAGE_NAME": "com.joselevelsup.mobide"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.ionicframework.mobide237808"
-        },
-        "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ionicframework.mobide237808"
-        },
-        "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.mobide237808"
-        },
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.mobide237808"
-        },
-        "cordova-plugin-x-toast": {
-            "PACKAGE_NAME": "com.ionicframework.mobide237808"
-        },
-        "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.mobide237808"
+            "PACKAGE_NAME": "com.joselevelsup.mobide"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.ionicframework.mobide237808"
+            "PACKAGE_NAME": "com.joselevelsup.mobide"
         },
-        "cordova-plugin-admobpro": {
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.joselevelsup.mobide"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.joselevelsup.mobide"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.joselevelsup.mobide"
+        },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.joselevelsup.mobide"
+        },
+        "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.joselevelsup.mobide"
         }
     },
-    "dependent_plugins": {
-        "cordova-plugin-extension": {
-            "PACKAGE_NAME": "com.joselevelsup.mobide"
-        }
-    }
+    "dependent_plugins": {}
 }
