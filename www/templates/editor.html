@@ -1,6 +1,11 @@
 <ion-view view-title="Editor">
   <ion-nav-buttons side="right">
-    <button class="button button-icon button-clear ion-play" ng-style="playButton" ng-click=playFile(f.name);></button>
+    <div ng-if="file.fileIsOpen == false">
+      <button class="button button-icon button-clear ion-play" ng-style="playButton" ng-click="playCurrentFile();"></button>
+    </div>
+    <div ng-if="file.fileIsOpen == true">
+      <button class="button button-icon button-clear ion-play" ng-style="playButton" ng-click="playFile(f.name, f.url);"></button>
+    </div>
     <button class="button button-icon button-clear ion-more" ng-click="popover.show($event);"></button>
     <button class="button button-icon button-clear ion-code" ng-click="modal5.show();"></button>
   </ion-nav-buttons>

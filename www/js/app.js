@@ -89,7 +89,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   $urlRouterProvider.otherwise('/app/editor');
 });
 
-app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlatform, ionicMaterialInk, ionicMaterialMotion, $ionicSideMenuDelegate, $ionicPopover, $ionicModal, $cordovaInAppBrowser, $cordovaFile, $cordovaToast){
+app.controller('mainCtrl', function($scope, $rootScope, $window, $timeout, $http, $ionicPlatform, ionicMaterialInk, ionicMaterialMotion, $ionicSideMenuDelegate, $ionicPopover, $ionicModal, $cordovaInAppBrowser, $cordovaFile, $cordovaToast){
   $timeout(function(){
     ionicMaterialInk.displayEffect();
     ionicMaterialMotion.ripple();
@@ -141,12 +141,6 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
   }).then(function(modal2){
     $scope.modal2 = modal2;
   });
-  $ionicModal.fromTemplateUrl('templates/newFolderModal.html', {
-    scope: $scope,
-    animation: 'slide-in-down'
-  }).then(function(modal3){
-    $scope.modal3 = modal3;
-  });
   $ionicModal.fromTemplateUrl('templates/newFileModal.html', {
     scope: $scope,
     animation: 'slide-in-down'
@@ -166,7 +160,8 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
     editor: "",
     themes: "",
     folder: null,
-    open: ""
+    open: "",
+    fileIsOpen: false
   }
 
     $scope.editOptions = {
@@ -212,6 +207,7 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
   }
 
   $scope.newFile = function(modeType){
+    $scope.file.fileIsOpen = false;
     $scope.file.editor = null;
     $scope.editOptions.mode = modeType;
     $scope.modal4.hide();
@@ -225,6 +221,36 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
       $scope.playButton = {'visibility': 'hidden'};
     }
   }
+  $scope.playCurrentFile = function(){
+    $cordovaFile.checkFile(cordova.file.externalRootDirectory+"/Mobide", "default.html")
+    .then(function(success){
+        //Success will not happen because the file will be deleted after running in the browser
+    }, function(error){
+      $cordovaFile.createFile(cordova.file.externalRootDirectory+"/Mobide", "default.html", true)
+        .then(function(success){
+          $cordovaFile.writeFile(cordova.file.externalRootDirectory+"/Mobide", "default.html", $scope.file.editor, true)
+            .then(function (success) {
+              $cordovaInAppBrowser.open(cordova.file.externalRootDirectory+"/Mobide/default.html", "_blank", options)
+                .then(function(success){
+                  // Success
+                }, function(error){
+                  // console.log("Failed");
+                  $cordovaToast.showLongBottom('Error with Opening browser');
+                });
+            }, function (error) {
+              $cordovaToast.showShortBottom("Failed");
+            });
+        })
+    })
+    $rootScope.$on('$cordovaInAppBrowser:exit', function(e, event){
+      $cordovaFile.removeFile(cordova.file.externalRootDirectory+"/Mobide", "default.html")
+        .then(function(success){
+          // console.log("Success on deleting default.html after inappbrowser closes");
+        }, function(error){
+          // console.log("Something happened after closing inappbrowser: "+error);
+        });
+    });
+  }
 
   $scope.saveModal = function(){
     $scope.modal.show();
@@ -235,10 +261,10 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
         dirReader.readEntries(function (entries) {
           $scope.savedFiles = entries;
         }, function (err) {
-          console.log(err);
+          // console.log(err);
         });
       }, function (err) {
-        console.log(err);
+        // console.log(err);
       });
     }
     if(ionic.Platform.isIOS()){
@@ -247,10 +273,10 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
         dirReader.readEntries(function (entries) {
           $scope.savedFiles = entries;
         }, function (err) {
-          console.log(err);
+          // console.log(err);
         });
       }, function (err) {
-        console.log(err);
+        // console.log(err);
       });
     }
   };
@@ -348,10 +374,10 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
             $scope.dirFiles = entries;
             // console.log(entries);
           }, function (err) {
-            console.log(err);
+            // console.log(err);
           });
         }, function (err) {
-          console.log(err);
+          // console.log(err);
         });
       }
       if(ionic.Platform.isIOS()){
@@ -361,16 +387,17 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
             $scope.dirFiles = entries;
             // console.log(entries);
           }, function (err) {
-            console.log(err);
+            // console.log(err);
           });
         }, function (err) {
-          console.log(err);
+          // console.log(err);
         });
       }
     })
   }
 
   $scope.openThis = function(fileName, url){
+    $scope.file.fileIsOpen = true;
     if(ionic.Platform.isAndroid()){
         $cordovaFile.readAsText(cordova.file.externalRootDirectory+"/Mobide", fileName)
           .then(function(result){
@@ -381,9 +408,9 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
               $cordovaInAppBrowser.open(url, "_blank", options)
                 .then(function(success){
                   // Success
-                  console.log("Worked");
+                  // console.log("Worked");
                 }, function(error){
-                  console.log("Failed");
+                  // console.log("Failed");
                   // $cordovaToast.showLongBottom('Error with Opening App')
                 });
             }
@@ -399,12 +426,12 @@ app.controller('mainCtrl', function($scope, $window, $timeout, $http, $ionicPlat
           $scope.modal2.hide();
           $scope.file.editor = result;
           $scope.playFile = function(){
-            $cordovaInAppBrowser.open(cordova.file.documentsDirectory+"Mobide"+'/'+fileName, "_blank", options)
+            $cordovaInAppBrowser.open(url, "_blank", options)
               .then(function(success){
                 // Success
-                console.log("Worked");
+                // console.log("Worked");
               }, function(error){
-                console.log("Failed");
+                // console.log("Failed");
                 // $cordovaToast.showLongBottom('Error with Opening App')
               });
           }
