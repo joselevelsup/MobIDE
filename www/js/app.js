@@ -222,34 +222,67 @@ app.controller('mainCtrl', function($scope, $rootScope, $window, $timeout, $http
     }
   }
   $scope.playCurrentFile = function(){
-    $cordovaFile.checkFile(cordova.file.externalRootDirectory+"/Mobide", "default.html")
-    .then(function(success){
-        //Success will not happen because the file will be deleted after running in the browser
-    }, function(error){
-      $cordovaFile.createFile(cordova.file.externalRootDirectory+"/Mobide", "default.html", true)
-        .then(function(success){
-          $cordovaFile.writeFile(cordova.file.externalRootDirectory+"/Mobide", "default.html", $scope.file.editor, true)
-            .then(function (success) {
-              $cordovaInAppBrowser.open(cordova.file.externalRootDirectory+"/Mobide/default.html", "_blank", options)
-                .then(function(success){
-                  // Success
-                }, function(error){
-                  // console.log("Failed");
-                  $cordovaToast.showLongBottom('Error with Opening browser');
-                });
-            }, function (error) {
-              $cordovaToast.showShortBottom("Failed");
-            });
-        })
-    })
-    $rootScope.$on('$cordovaInAppBrowser:exit', function(e, event){
-      $cordovaFile.removeFile(cordova.file.externalRootDirectory+"/Mobide", "default.html")
-        .then(function(success){
-          // console.log("Success on deleting default.html after inappbrowser closes");
-        }, function(error){
-          // console.log("Something happened after closing inappbrowser: "+error);
-        });
-    });
+    if(ionic.Platform.isAndroid()){
+      $cordovaFile.checkFile(cordova.file.externalRootDirectory+"/Mobide", "default.html")
+      .then(function(success){
+          //Success will not happen because the file will be deleted after running in the browser
+      }, function(error){
+        $cordovaFile.createFile(cordova.file.externalRootDirectory+"/Mobide", "default.html", true)
+          .then(function(success){
+            $cordovaFile.writeFile(cordova.file.externalRootDirectory+"/Mobide", "default.html", $scope.file.editor, true)
+              .then(function (success) {
+                $cordovaInAppBrowser.open(cordova.file.externalRootDirectory+"/Mobide/default.html", "_blank", options)
+                  .then(function(success){
+                    // Success
+                  }, function(error){
+                    // console.log("Failed");
+                    $cordovaToast.showLongBottom('Error with Opening browser');
+                  });
+              }, function (error) {
+                $cordovaToast.showShortBottom("Failed");
+              });
+          })
+      })
+      $rootScope.$on('$cordovaInAppBrowser:exit', function(e, event){
+        $cordovaFile.removeFile(cordova.file.externalRootDirectory+"/Mobide", "default.html")
+          .then(function(success){
+            // console.log("Success on deleting default.html after inappbrowser closes");
+          }, function(error){
+            // console.log("Something happened after closing inappbrowser: "+error);
+          });
+      });
+    }
+    if(ionic.Platform.isIOS()){
+      $cordovaFile.checkFile(cordova.file.documentsDirectory+"/Mobide", "default.html")
+      .then(function(success){
+          //Success will not happen because the file will be deleted after running in the browser
+      }, function(error){
+        $cordovaFile.createFile(cordova.file.documentsDirectory+"/Mobide", "default.html", true)
+          .then(function(success){
+            $cordovaFile.writeFile(cordova.file.documentsDirectory+"/Mobide", "default.html", $scope.file.editor, true)
+              .then(function (success) {
+                $cordovaInAppBrowser.open(cordova.file.documentsDirectory+"/Mobide/default.html", "_blank", options)
+                  .then(function(success){
+                    // Success
+                  }, function(error){
+                    // console.log("Failed");
+                    $cordovaToast.showLongBottom('Error with Opening browser');
+                  });
+              }, function (error) {
+                $cordovaToast.showShortBottom("Failed");
+              });
+          })
+      })
+      $rootScope.$on('$cordovaInAppBrowser:exit', function(e, event){
+        $cordovaFile.removeFile(cordova.file.documentsDirectory+"/Mobide", "default.html")
+          .then(function(success){
+            // console.log("Success on deleting default.html after inappbrowser closes");
+          }, function(error){
+            // console.log("Something happened after closing inappbrowser: "+error);
+          });
+      });
+    }
+
   }
 
   $scope.saveModal = function(){
